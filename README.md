@@ -6,7 +6,7 @@ Kaitlyn Lu (kl995@cornell.edu)
 Lucas He (th689@cornell.edu)
 
 ## Dataset: ATP Tennis Matches (2024)
-Downloading the Dataset: https://catalog.data.gov/dataset/crime-data-from-2020-to-present (use the .csv file) 
+Downloading the Dataset: https://github.com/JeffSackmann/tennis_atp (scroll down to find the 2024 one)
 
 ## Checking that you downloaded the dataset: 
 Run 'python -m unittest test_dataset.py' in the main folder. You should see the following result: 
@@ -22,7 +22,7 @@ This ensures you have correctly downloaded the dataset.
 
 ### Project Description: 
 
-We wish to find patterns in Crime Data from Los Angeles to aid with law enforcement agencies and facilitate police dispatch
+We wish to predict the winner of the 2025 Australian Open using player data to create power rankings from 2024
 
 
 ### Using the Repository
