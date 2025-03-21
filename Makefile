@@ -14,5 +14,3 @@ test: setup
 
 clean:
 	rm -rf $(VENV_DIR)
-	df
-	
