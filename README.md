@@ -20,6 +20,13 @@ OK
 
 This ensures you have correctly downloaded the dataset.
 
+## Frontend using Streamlit
+We are using Streamlit to host our project. To see our website, run 'streamlit run frontend/app.py'
+
+Make sure you are using the newest version of streamlit. You can verify this by running 'pip install --upgrade streamlit'
+
+Once you have launched the website, navigate to the visualization section to see our plots
+
 ### Project Description: 
 
 We wish to predict the winner of the 2025 Australian Open using player data to create power rankings from 2024
@@ -35,4 +42,5 @@ datavis_tests.ipynb: Jupyter notebook testing all data manipulation functions fr
 Makefile: file that runs useful tests.
 plots/ : contains useful plots visualizing the data
 milestones/ : documenting the progress of this project
+frontend/ : includes the code for the frontend of this project.
 README.md: this file, has useful info about the project
