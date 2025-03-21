@@ -10,7 +10,7 @@ def main():
 
     st.header("About Us")
     st.subheader("Lucas:")
-    st.text("[text + photo here]")
+    st.text("I’m a freshman studying CS and math. I love exploring new places on campus. You can find me playing basketball at Helen Newman or playing Valorant at the gaming lounge. Feel free to reach out![text + photo here]")
     st.subheader("Rohit:")
     st.text("[text + photo here]")
     st.subheader("Kaitlyn:")
