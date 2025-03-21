@@ -14,7 +14,7 @@ def main():
     st.subheader("Rohit:")
     st.text("[text + photo here]")
     st.subheader("Kaitlyn:")
-    st.text("[text + photo here]")
+    st.text("I am a freshman in A&S studying CS. I love reading and writing, and I'm excited to be a part of CDS! [add photo]")
 
 def introduction():
     st.title("Project Introduction")
@@ -42,10 +42,9 @@ def frontend():
     st.image("pages.png")
     st.text("A glimpse of the code used for the frontend.")
 
-#TODO
 def ci():
     st.title("Continuous Integration")
-    st.text("Describe what you are using GitHub actions for.")
+    st.text("We are using GitHub actions to run the test file every time we push code into the repository so that we can see how our code affects any preconditions/requirements we've set.")
     st.text("Include a photo or two.")
 
 if __name__ == "__main__":
