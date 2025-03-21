@@ -10,7 +10,7 @@ setup:
 	$(PIP) install -r requirements.txt
 
 test: setup
-	$(PYTHON) -m pytest test_dataset.py
+	$(PYTHON) -m pytest tests/test_dataset.py
 
 clean:
 	rm -rf $(VENV_DIR)
