@@ -26,3 +26,4 @@ class TestRegression(unittest.TestCase):
         expected_output = 3 * 5.0 + 7
         predicted_output = model.predict(test_input)[0]
         self.assertAlmostEqual(predicted_output, expected_output, delta=2.0)  # Allow noise variance
+        
