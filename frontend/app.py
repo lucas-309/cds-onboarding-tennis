@@ -84,4 +84,3 @@ if __name__ == "__main__":
         st.Page(ci, title="Continuous Integration")
     ])
     pg.run()
-    
