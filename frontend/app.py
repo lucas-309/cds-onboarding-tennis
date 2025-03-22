@@ -45,7 +45,8 @@ def frontend():
 def ci():
     st.title("Continuous Integration")
     st.text("We are using GitHub actions to run the test file every time we push code into the repository so that we can see how our code affects any preconditions/requirements we've set.")
-    st.text("Include a photo or two.")
+    st.image("github.png")
+    st.text("A screenshot of our workflow runs.")
 
 if __name__ == "__main__":
     pg = st.navigation([
