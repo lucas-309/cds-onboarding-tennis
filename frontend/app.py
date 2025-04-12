@@ -58,7 +58,7 @@ def visualization():
 
 def supervisedLearning():
     st.title("Supervised Learning")
-    st.image("ms5plots/output_pca_analysis.png")
+    st.image("../ms5plots/output_pca_analysis.png")
     st.text(
     "This visualization shows the results of our PCA analysis. "
     "It helps illustrate how much variance is captured by each principal component, "
@@ -66,28 +66,28 @@ def supervisedLearning():
     )
 
     # 2) KNN K-Neighbors
-    st.image("ms5plots/output_knn_kneighbors.png")
+    st.image("../ms5plots/output_knn_kneighbors.png")
     st.text(
     "Here we examine how different values of K (number of neighbors) affect KNN performance. "
     "As shown, the choice of K can drastically change the boundary of classification or regression fits."
     )
 
     # 3) Different Scaling Factors
-    st.image("ms5plots/different_scaling_factors.png")
+    st.image("../ms5plots/different_scaling_factors.png")
     st.text(
     "This plot demonstrates the effect of various scaling techniques (e.g., StandardScaler, MinMaxScaler). "
     "We can see how different scalers influence feature distributions and, consequently, model performance."
     )
 
     # 4) Changing Gamma and C
-    st.image("ms5plots/changing_gamma_and_c.png")
+    st.image("../ms5plots/changing_gamma_and_c.png")
     st.text(
         "This graphic illustrates how adjusting the gamma and C hyperparameters in an SVM affects the decision boundary. "
         "Higher gamma values can overfit by creating very wiggly boundaries, whereas different C values regulate margin size."
     )
 
     # 5) Changing C Linearly
-    st.image("ms5plots/changing_c_linearly.png")
+    st.image("../ms5plots/changing_c_linearly.png")
     st.text(
         "This plot focuses on systematically increasing the C parameter in an SVM. "
         "We can see how a larger C penalizes misclassifications more aggressively, potentially reducing bias but increasing variance."
