@@ -1,4 +1,13 @@
 import streamlit as st
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+import pandas as pd
+import numpy as np
+from sklearn.utils import resample
+
+
 
 # TODO
 
@@ -9,16 +18,32 @@ def main():
     st.header("Team Members: Lucas He, Rohit Vakkalagadda, Kaitlyn Lu")
     st.divider()
     st.header("About Us")
-    st.subheader("Lucas:")
-    st.text(
-        "I'm a freshman studying CS and math. I love exploring new places on campus. "
-        "You can find me playing basketball at Helen Newman or playing Valorant at the gaming lounge. "
-        "Feel free to reach out![text + photo here]"
-    )
-    st.subheader("Rohit:")
-    st.text("[text + photo here]")
-    st.subheader("Kaitlyn:")
-    st.text("I am a freshman in A&S studying CS. I love reading and writing, and I'm excited to be a part of CDS! [add photo]")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.subheader("Lucas")
+        st.image("images/lucas.png", use_container_width=True)
+        st.text(
+            "I'm a freshman studying CS and China Asia-Pacific Studies.\n"
+            "I love exploring new places on campus. "
+            "My favorite place to eat in Collegetown: Oishii Bowl 🍜\n"
+            "Contact: th689@cornell.edu"
+        )
+
+    with col2:
+        st.subheader("Rohit")
+        st.image("images/rohit.png", use_container_width=True)  # Replace with correct image path
+        st.text(
+        )
+
+    with col3:
+        st.subheader("Kaitlyn")
+        st.image("images/kaitlyn.png", use_container_width=True)  # Replace with correct image path
+        st.text(
+            "I am a freshman in A&S studying CS.\n"
+            "I love reading and writing ✍️📚\n"
+        )
 
 
 def introduction():
@@ -93,12 +118,118 @@ def supervisedLearning():
         "We can see how a larger C penalizes misclassifications more aggressively, potentially reducing bias but increasing variance."
     )
 
+def conclusion():
+    st.title("Conclusion")
+    st.text(
+        "In our project, we managed to build several machine learning models to accurately predict features of a game given its other characteristics. "
+        "For instance, we tried to predict the type of surface the game was played on, given the player data and the game score."
+        "We achieved "
+    )
+    st.text(
+        "We gained hands-on experience with real-world data preprocessing, data cleaning, and the implementation of various supervised learning models. "
+        "We also learned how to interpret the influence of model hyperparameters such as K in KNN and gamma and C in SVMs. " 
+        "Visualization was essential for understanding the internal mechanics of the models and conveying our findings clearly."
+    )
+    st.text("If we were to do the project again, we would:\n"
+            "- Start with clearer goals for model evaluation \n"
+            "- Be more careful with selecting a quality dataset \n"
+            "- Be more proactive in recognizing when we may need to pivot to a different dataset"
+            )
 
 def frontend():
     st.title("Frontend")
     st.text("We are using Streamlit for the frontend in order to display our project's progress and highlights.")
     st.image("pages.png")
     st.text("A glimpse of the code used for the frontend.")
+
+
+def label_encode(column):
+    labels = column.unique()
+    label_dict = {label: idx for idx, label in enumerate(labels)}
+    return column.map(label_dict), label_dict
+
+def testRFModel():
+    st.title("Test Random Forest Model")
+
+
+    st.markdown("Enter match statistics to predict the **surface** type (hard, clay, grass)")
+
+    # Load or reuse the original dataset
+    df = pd.read_csv("../atp_matches_2024.csv")
+
+    # Undersample hard data
+    df_majority = df[df['surface'] == 'Hard']
+    df_minority = df[df['surface'] != 'Hard']
+
+    df_majority_downsampled = resample(
+        df_majority,
+        replace=False,
+        n_samples=len(df_minority),
+        random_state=42
+    )
+
+    df = pd.concat([df_majority_downsampled, df_minority])
+
+
+    df['surface_encoded'], surface_encoder = label_encode(df['surface'])
+    inverse_surface_encoder = {v: k for k, v in surface_encoder.items()}
+
+    # Prepare features and target
+    drop_cols = ['match_num', 'tourney_date', 'round', 'tourney_id', 'score', 
+                 'surface_encoded', "tourney_name", "winner_name", "loser_name", "surface", 
+                 "winner_hand", "loser_hand", "tourney_level", "winner_ioc", "loser_ioc"]
+    # drop_cols += ['w_ace', 'w_df', 'w_svpt', 'w_1stIn', 'w_1stWon',
+    #    'w_2ndWon', 'w_SvGms', 'w_bpSaved', 'w_bpFaced', 'l_ace', 'l_df',
+    #    'l_svpt', 'l_1stIn', 'l_1stWon', 'l_2ndWon', 'l_SvGms', 'l_bpSaved',
+    #    'l_bpFaced']
+    X = df.drop(columns=drop_cols)
+    X = X.select_dtypes(include=[np.number]) 
+    y = df['surface_encoded']
+
+    # Train/test split and model setup (use cache in production)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.fit_transform(X_test)
+
+    rf = RandomForestClassifier(n_estimators=100, class_weight='balanced', random_state=42)
+    rf.fit(X_train_scaled, y_train)
+
+    # Dynamic form for user input
+    user_input = {}
+    clay_df = df[df['surface'] == 'Clay']
+    st.subheader("Input Match Stats:")
+    for col in X.columns:
+        if col in ['draw_size', 'minutes', 'winner_id', 'loser_id', 'winner_rank_points', 'loser_rank_points']:
+            val = st.number_input(f"{col}", value=float(df[col].mean()), format="%.4f")
+            user_input[col] = val
+        else:
+            user_input[col] = clay_df[col].mean()
+    
+    st.write("Label Distribution in y_train:")
+    st.write(y_train.value_counts())
+
+    if st.button("Predict Surface Type"):
+        input_df = pd.DataFrame([user_input], columns=X.columns)
+        input_scaled = scaler.transform(input_df)
+        prediction = rf.predict(input_scaled)[0]
+        proba = rf.predict_proba(input_scaled)[0][prediction]
+
+        surface_name = inverse_surface_encoder.get(prediction, "Unknown")
+
+        # Calculate test error
+        y_pred_test = rf.predict(X_test_scaled)
+        test_accuracy = accuracy_score(y_test, y_pred_test)
+        test_error = round(1 - test_accuracy, 4)
+
+        st.write("Input Vector (scaled):", input_scaled)
+        st.write("Raw Prediction:", prediction)
+
+        st.success(f"🏟️ Predicted Surface: **{surface_name}**")
+        st.info(f"📉 Test Set Error: **{test_error}**")
+        st.info(f"🔍 Confidence Score: **{round(proba * 100, 2)}%**")
+    
+
 
 
 def ci():
@@ -114,6 +245,7 @@ def ci():
 
 
 
+
 if __name__ == "__main__":
     pg = st.navigation([
         st.Page(main, title="Homepage"),
@@ -121,6 +253,8 @@ if __name__ == "__main__":
         st.Page(manipulation, title="Data Manipulation"),
         st.Page(visualization, title="Data Visualization"),
         st.Page(supervisedLearning, title="Supervised Learning"),
+        st.Page(testRFModel, title="Test RF Model"),
+        st.Page(conclusion, title="Conclusion"),
         st.Page(frontend, title="Frontend"),
         st.Page(ci, title="Continuous Integration")
     ])
