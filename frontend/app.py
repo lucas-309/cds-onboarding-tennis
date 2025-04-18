@@ -25,16 +25,19 @@ def main():
         st.subheader("Lucas")
         st.image("images/lucas.png", use_container_width=True)
         st.text(
-            "I'm a freshman studying CS and China Asia-Pacific Studies.\n"
-            "I love exploring new places on campus. "
-            "My favorite place to eat in Collegetown: Oishii Bowl 🍜\n"
+            "I'm studying CS and China Asia-Pacific Studies.\n"
+            "I love exploring campus\n"
+            "My favorite place to eat in Collegetown: Oishii Bowl\n"
             "Contact: th689@cornell.edu"
         )
 
     with col2:
         st.subheader("Rohit")
-        st.image("images/rohit.png", use_container_width=True)  # Replace with correct image path
-        st.text(
+        st.image("images/rohit.JPG", use_container_width=True)  # Replace with correct image path
+        st.text("I'm studying CS.\n"
+            "I'm on the DE subteam\n"
+            "My favorite place to eat in Collegetown: Xi'An Street Food\n"
+            "Contact: rv324@cornell.edu"
         )
 
     with col3:
@@ -43,28 +46,105 @@ def main():
         st.text(
             "I am a freshman in A&S studying CS.\n"
             "I love reading and writing ✍️📚\n"
+            "My favorite place to eat in Collegetown: Gangnam Station\n"
+            "Contact: kl995@cornell.edu"
         )
 
 
 def introduction():
     st.title("Project Introduction")
-    st.text("Our project aims to accurately predict the winner of the 2025 Australian Open using the 2024 player data to create power rankings.")
+    st.text("Our question: Given the game-specific statistics of a match, can we determine the surface on which it was played?")
+    st.text("We chose this question because we all like tennis or have played tennis in high school, and thought that entering a field with tons of numerical data (like sports) would lend us better results than our previous field (crime)\n"
+            "Here are the features we had: \n"
+            "tourney_id: Unique tournament event identifier code.\n"
+            "tourney_name: Official tournament event title, e.g. Wimbledon Championships.\n"
+            "surface: Court surface type, e.g. grass, clay, hard.\n"
+            "draw_size: Number of players or teams in main draw.\n"
+            "tourney_level: Tournament category or tier, e.g. Grand Slam.\n"
+            "tourney_date: Tournament start date in YYYYMMDD format.\n"
+            "match_num: Match sequence number within the tournament.\n"
+            "winner_id: Unique identifier for winning player.\n"
+            "winner_name: Full name of the match winner.\n"
+            "winner_hand: Winner’s playing hand: Left, Right, or Unknown.\n"
+            "winner_ht: Winner’s height measurement in centimeters.\n"
+            "winner_ioc: Winner’s nationality IOC country code.\n"
+            "winner_age: Winner’s age at match start date.\n"
+            "loser_id: Unique identifier for losing match player.\n"
+            "loser_name: Full name of the match loser.\n"
+            "loser_hand: Loser’s playing hand: Left, Right, or Unknown.\n"
+            "loser_ht: Loser’s height measurement in centimeters.\n"
+            "loser_ioc: Loser’s nationality IOC country code.\n"
+            "loser_age: Loser’s age at match start date.\n"
+            "score: Match score by sets as formatted string.\n"
+            "best_of: Total sets required to win the match.\n"
+            "round: Tournament round code, e.g. QF, SF, Final.\n"
+            "minutes: Total match duration measured in minutes.\n"
+            "w_ace: Number of aces served by the winner.\n"
+            "w_df: Number of double faults committed by winner.\n"
+            "w_svpt: Winner’s total number of service points played.\n"
+            "w_1stIn: Winner’s count of successful first serves in.\n"
+            "w_1stWon: Number of first‑serve points won by winner.\n"
+            "w_2ndWon: Number of second‑serve points won by winner.\n"
+            "w_SvGms: Winner’s count of service games held.\n"
+            "w_bpSaved: Number of break points saved by winner.\n"
+            "w_bpFaced: Number of break points faced by winner.\n"
+            "l_ace: Number of aces served by the loser.\n"
+            "l_df: Number of double faults committed by loser.\n"
+            "l_svpt: Loser’s total number of service points played.\n"
+            "l_1stIn: Loser’s count of successful first serves in.\n"
+            "l_1stWon: Number of first‑serve points won by loser.\n"
+            "l_2ndWon: Number of second‑serve points won by loser.\n"
+            "l_SvGms: Loser’s count of service games held.\n"
+            "l_bpSaved: Number of break points saved by loser.\n"
+            "l_bpFaced: Number of break points faced by loser.\n"
+            "winner_rank: Winner’s world ranking at tournament start.\n"
+            "winner_rank_points: Winner’s total ATP/WTA ranking points at start.\n"
+            "loser_rank: Loser’s world ranking at tournament start.\n"
+            "loser_rank_points: Loser’s total ATP/WTA ranking points at start.\n"
+    )
+
     st.text(
         "Our dataset describes all the matches from the 2024 ATP Tour (including information like match winner, game points, etc.). "
-        "We chose it as we were interested in predicting the winner of the 2025 Australian Open, and we thought the data from 2024 would be the most useful. "
+        "We chose it as we were interested in predicting the surface that a match was played on, using the match statistics, and we thought the data from 2024 would be the most useful. "
         "Important features include the ranking points of the winner and loser at the time of the match (winner_rank_points and loser_rank_points, respectively), "
         "the ages of both players (winner_age, loser_age), and point information (such as points played by the winner and loser)."
     )
-    st.text("We want to use this data to make a prediction model (based on power rankings) in order to try and predict the winner of the 2025 Australian Open.")
+    st.text("We want to use this data to make a prediction model (based on power rankings) in order to try and predict the surface a match is played on given any arbitrary statistics")
 
 
 def manipulation():
-    st.title("Data Manipulation")
+    st.title("Data Manipulation & Cleaning")
     st.text(
         "We decided to clean the data by removing all rows with NaN values. "
         "We made this decision because we knew that those NaN values would do nothing but harm our prediction model, "
         "so we decided the best choice was to remove the match entirely."
     )
+    st.text(
+        "In addition, we removed certain columns which had no influence on the court surface, such as tourney_date"
+    )
+    st.image("images/before_nan.png")
+    st.text(
+        "Before removing NaN values"   
+    )
+    st.image("images/after_nan.png")
+    st.text("After remove NaN values")
+    st.text("After cleaning null values and rows, we were left with 2761 rows, or 89% of the original dataset. "
+        "We also label encoded the following columns: "
+        "['tourney_name', 'winner_name', 'loser_name', 'surface', 'winner_hand', 'loser_hand', "
+        "'tourney_level', 'winner_ioc', 'loser_ioc', 'round'].")
+    st.title("Undersampling")
+    st.text(
+        "Later on, in classification, we noticed there are much more data points with hard courts versus clay or grass courts. "
+        "We fixed this by manually undersampling hard count by filtering the data with hard courts and using scikit's resampling tool "
+        "to place higher emphasis on minority data."    
+    )
+    st.image("images/before_undersampling.png")
+    st.text(
+        "Before undersampling"    
+    )
+    st.image("images/after_undersampling.png")
+    st.text("After undersampling")
+
 
 
 def visualization():
