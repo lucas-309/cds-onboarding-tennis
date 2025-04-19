@@ -25,7 +25,7 @@ def main():
         st.subheader("Lucas")
         st.image("images/lucas.png", use_container_width=True)
         st.text(
-            "I'm studying CS and China Asia-Pacific Studies.\n"
+            "I'm a freshman studying CS and China Asia-Pacific Studies.\n"
             "I love exploring campus\n"
             "My favorite place to eat in Collegetown: Oishii Bowl\n"
             "Contact: th689@cornell.edu"
@@ -34,7 +34,7 @@ def main():
     with col2:
         st.subheader("Rohit")
         st.image("images/rohit.JPG", use_container_width=True)  # Replace with correct image path
-        st.text("I'm studying CS.\n"
+        st.text("I'm a freshman studying CS.\n"
             "I'm on the DE subteam\n"
             "My favorite place to eat in Collegetown: Xi'An Street Food\n"
             "Contact: rv324@cornell.edu"
@@ -44,7 +44,7 @@ def main():
         st.subheader("Kaitlyn")
         st.image("images/kaitlyn.png", use_container_width=True)  # Replace with correct image path
         st.text(
-            "I am a freshman in A&S studying CS.\n"
+            "I'm a freshman in A&S studying CS.\n"
             "I love reading and writing ✍️📚\n"
             "My favorite place to eat in Collegetown: Gangnam Station\n"
             "Contact: kl995@cornell.edu"
@@ -55,6 +55,15 @@ def introduction():
     st.title("Project Introduction")
     st.text("Our question: Given the game-specific statistics of a match, can we determine the surface on which it was played?")
     st.text("We chose this question because we all like tennis or have played tennis in high school, and thought that entering a field with tons of numerical data (like sports) would lend us better results than our previous field (crime)\n"
+    )
+    st.text(
+        "Our dataset describes all the matches from the 2024 ATP Tour (including information like match winner, game points, etc.). "
+        "We chose it as we were interested in predicting the surface that a match was played on, using the match statistics, and we thought the data from 2024 would be the most useful. "
+        "Important features include the ranking points of the winner and loser at the time of the match (winner_rank_points and loser_rank_points, respectively), "
+        "the ages of both players (winner_age, loser_age), and point information (such as points played by the winner and loser)."
+    )
+    st.text("We want to use this data to make a prediction model (based on power rankings) in order to try and predict the surface a match is played on given any arbitrary statistics")
+    st.text(
             "Here are the features we had: \n"
             "tourney_id: Unique tournament event identifier code.\n"
             "tourney_name: Official tournament event title, e.g. Wimbledon Championships.\n"
@@ -103,13 +112,7 @@ def introduction():
             "loser_rank_points: Loser’s total ATP/WTA ranking points at start.\n"
     )
 
-    st.text(
-        "Our dataset describes all the matches from the 2024 ATP Tour (including information like match winner, game points, etc.). "
-        "We chose it as we were interested in predicting the surface that a match was played on, using the match statistics, and we thought the data from 2024 would be the most useful. "
-        "Important features include the ranking points of the winner and loser at the time of the match (winner_rank_points and loser_rank_points, respectively), "
-        "the ages of both players (winner_age, loser_age), and point information (such as points played by the winner and loser)."
-    )
-    st.text("We want to use this data to make a prediction model (based on power rankings) in order to try and predict the surface a match is played on given any arbitrary statistics")
+    
 
 
 def manipulation():
@@ -132,7 +135,7 @@ def manipulation():
         "We also label encoded the following columns: "
         "['tourney_name', 'winner_name', 'loser_name', 'surface', 'winner_hand', 'loser_hand', "
         "'tourney_level', 'winner_ioc', 'loser_ioc', 'round'].")
-    st.title("Undersampling")
+    st.header("Undersampling")
     st.text(
         "Later on, in classification, we noticed there are much more data points with hard courts versus clay or grass courts. "
         "We fixed this by manually undersampling hard count by filtering the data with hard courts and using scikit's resampling tool "
@@ -160,17 +163,28 @@ def visualization():
         "As shown by the graph, most winners played under 10 aces. The graph is surprisingly bimodal."
     )
     st.text("The visualizations helped us see the distribution of winners' statistics, such as how many service points they played and how many aces they served.")
+    st.subheader("Insights")
+    st.text("Some interesting results we found:\n"
+            "1. Based on winner age and violin plots, we found that one tournament (the Monte Carlo Masters) had older winners on average - interesting observation\n"
+            "2. There was a clear spike for younger players and having more rank points on tour.\n"
+            "3. Break points saved was a key metric in determining a winner (0.6 correlation) of winner or loser\n"
+            "4. The average age of a winner on tour was around 26- not that important because it actually reflected the average age of a player on tour"
+            )
 
 def supervisedLearning():
     st.title("Supervised Learning")
+    st.subheader("PCA")
     st.image("../ms5plots/output_pca_analysis.png")
+    st.text("PCA stands for principle component analysis. We take all features of the supervised learning algorithm, and then determine the dimension on which this data has the highest variance. Then, we project all these points onto this dimensions (consider this to be a 2-D graph onto a 1-D line) and we are left with a line representation of the data. Next, we take the dimension with the next highest variance that is orthogonal to the first component and we also project our data on that line to reduce our dimensionality.")
     st.text(
     "This visualization shows the results of our PCA analysis. "
     "It helps illustrate how much variance is captured by each principal component, "
     "and how effectively the data is separated in the lower-dimensional feature space."
     )
+    st.text("After creating too many principal components, the component doesn’t capture the variance but rather noise that harms accuracy")
 
-    # 2) KNN K-Neighbors
+    st.subheader("KNN")
+    st.text("A K-nearest neighbors algorithm plots all data points by using the features, and then clusters them into groups with k neighbors. It is a classification algorithm.")
     st.image("../ms5plots/output_knn_kneighbors.png")
     st.text(
     "Here we examine how different values of K (number of neighbors) affect KNN performance. "
@@ -184,12 +198,15 @@ def supervisedLearning():
     "We can see how different scalers influence feature distributions and, consequently, model performance."
     )
 
-    # 4) Changing Gamma and C
+    st.subheader("SVM")
+    st.text("A support vector machine (SVM) is a supervised machine learning algorithm that finds the best boundary (called a hyperplane) to separate different classes of data points with the maximum margin (the largest possible distance from the nearest data points, called support vectors). They are used for classification and regression. SVMs use kernel functions, which map input data into a higher-dimensional space so that a linear separator can be found (examples include linear kernels and polynomial kernels.")
     st.image("../ms5plots/changing_gamma_and_c.png")
     st.text(
         "This graphic illustrates how adjusting the gamma and C hyperparameters in an SVM affects the decision boundary. "
         "Higher gamma values can overfit by creating very wiggly boundaries, whereas different C values regulate margin size."
     )
+    st.text("Increasing C means that the SVM will try to minimize misclassifications of training points (leading to higher accuracy) and will lead to a smaller margin size. As seen in our “Test Accuracy vs. C” graph, as we increase the value of C from 10-2 to 102, the accuracy goes from under 0.66 to nearly 0.70.")
+    st.text("Accuracy increases as C does because the SVM will penalize misclassifications (in training data) heavily, so the model will fit the training data more accurately. However, when C gets astronomically large, it could end up overfitting to the training data and contorting the decision boundary to account for random noise. This means that the model’s ability to generalize to new data will plummet and thus will perform poorly on the test data.")
 
     # 5) Changing C Linearly
     st.image("../ms5plots/changing_c_linearly.png")
@@ -197,13 +214,34 @@ def supervisedLearning():
         "This plot focuses on systematically increasing the C parameter in an SVM. "
         "We can see how a larger C penalizes misclassifications more aggressively, potentially reducing bias but increasing variance."
     )
+    st.text("One of the most obvious signs of the SVM overfitting is when the training accuracy is high but the test accuracy is low. Another sign is when the decision boundary is highly complex, which could indicate that random noise and outliers in the data are affecting the boundary.")
+
+    st.subheader("Decision Tree")
+    st.text("A decision tree is a supervised machine learning algorithm that resembles a flowchart. Each internal node is a question about a feature of the data, and the branches represent the possible outcomes. Leaf nodes are the final predictions given by the algorithm, whether that would be a label (for classification) or a value (for regression).")
+    st.text("As max depth increases, the model will make increasingly complex decisions in order to match the training data as much as possible. This comes at the cost of test data accuracy, because the model will be overfitted to the training data and thus unable to accurately predict with new data.")
+    st.text("Our random forest (RF) model is an enhanced decision tree that averages many decision trees for the best results")
+
+    st.subheader("Best model")
+    st.image("images/models.png")
+    st.text("The test errors were as follows: \n"
+            "K-NN - see graph, but around 0.63\n"
+            "SVM - see correlation graph, but best was Gamma = 0.01, C = 10.0, accuracy of 0.69\n"
+            "RF - highest test accuracy with 0.7034\n"
+            "Training time: \n"
+            "Fastest: KNN\n"
+            "SVM and RFC were comparable \n"
+            "Inference time: \n"
+            "Fastest: RFC \n"
+            "SVM and KNN were comparable"
+            )
+
 
 def conclusion():
     st.title("Conclusion")
     st.text(
         "In our project, we managed to build several machine learning models to accurately predict features of a game given its other characteristics. "
-        "For instance, we tried to predict the type of surface the game was played on, given the player data and the game score."
-        "We achieved "
+        "In particular, we tried to predict the type of surface the game was played on, given the player data and the game score."
+        "We achieved a 70% accuracy with our Random Forest model."
     )
     st.text(
         "We gained hands-on experience with real-world data preprocessing, data cleaning, and the implementation of various supervised learning models. "
